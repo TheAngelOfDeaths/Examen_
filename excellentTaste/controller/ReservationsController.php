@@ -14,8 +14,10 @@ class ReservationsController{
     }
 
     public function handleRequest(){
+        //getting from the url which action to do
         $op = isset($_GET['op']) ? $_GET['op'] : '';
 
+        //switch to find out which action to do
         switch($op){
             case 'createKlant':
                 $this->collectCreateCustomer();
@@ -41,18 +43,21 @@ class ReservationsController{
         }
     }
 
+    // create a customer when a new customer want to make a reservation
     public function collectCreateCustomer(){
         if (isset($_REQUEST['create_klant'])) {
             $klantnaam = isset($_REQUEST['klantnaam']) ? $_REQUEST['klantnaam'] : null;
             $telefoon = isset($_REQUEST['telefoon']) ? $_REQUEST['telefoon'] : null;
             $email = isset($_REQUEST['email']) ? $_REQUEST['email'] : null;
 
+            // check if everything is filled in
             if (empty($klantnaam) or empty($telefoon) or empty($email)) {
                 return "Alle velden zijn vereist";
             }
 
             try {
                 $this->ReservationsLogic->createCustomer($klantnaam, $telefoon, $email);
+                // get send back to the reservaions page
                 header("Location: index.php?con=reservations&op=create");
             } catch (Exception $e){
                 throw $e;
@@ -61,12 +66,16 @@ class ReservationsController{
         include 'view/reservations/klanten.php';
     }
 
+    // create function for creating reservations
     public function collectCreateReservation(){
 
+        // get all the customers from the database
         $Customer_data = $this->ReservationsLogic->readAllCustomers();
+        // send them to the display to make a select input for the form
         $html = $this->Display->createSelectCutomer($Customer_data); 
 
         if (isset($_REQUEST['submit'])) {
+            // get everything from the form
             $datum = isset($_REQUEST['datum']) ? $_REQUEST['datum'] : null;
             $tijd = isset($_REQUEST['tijd']) ? $_REQUEST['tijd'] : null;
             $aantal = isset($_REQUEST['aantal']) ? $_REQUEST['aantal'] : null;
@@ -76,10 +85,12 @@ class ReservationsController{
             $opmerkingen = isset($_REQUEST['opmerkingen']) ? $_REQUEST['opmerkingen'] : 'geen';
             $klant_id = isset($_REQUEST['klant_id']) ? $_REQUEST['klant_id'] : null;
 
+            // check if a field is empty
             if (empty($datum) or empty($tijd) or empty($aantal) or empty($tafel)) {
                 return "Alle velden zijn vereist";
             }
 
+            // send data to the logic
             try {
                 $this->ReservationsLogic->createReservation($tafel, $datum, $tijd, $klant_id, $aantal, $aantal_k, $allergieen, $opmerkingen);
             } catch (Exception $e){
@@ -91,8 +102,10 @@ class ReservationsController{
         include 'view/reservations/create.php';
     }
 
+    // get all the reservations that are made
     public function collectReadAllReservations(){
         $data = $this->ReservationsLogic->readAllReservations();
+        // send data to the display to make a table with the data
         $html = $this->Display->createTableReservations("reservations", $data);
         include 'view/reservations.php';
     }

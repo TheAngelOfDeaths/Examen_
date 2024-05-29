@@ -33,6 +33,10 @@ table{
     width: 50%;
 }
 
+table, td, th {
+    border: 1px solid;
+}
+
 @media (max-width: 800px) {
     .flex-row {
       flex-direction: column;

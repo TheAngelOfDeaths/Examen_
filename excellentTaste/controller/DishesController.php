@@ -15,8 +15,10 @@ class DishesController{
     }
 
     public function handleRequest(){
+        //getting from the url which action to do
         $op = isset($_GET['op']) ? $_GET['op'] : '';
 
+        //switch to find out which action to do
         switch($op){
             case 'create':
                 $this->collectCreateDish();
@@ -40,17 +42,20 @@ class DishesController{
 
     }
 
+    // create function for menuitems,
     public function collectCreateDish(){
         if (isset($_REQUEST['submit'])) {
+            // get everything from the form
             $menuitemcode = isset($_REQUEST['menuitemcode']) ? $_REQUEST['menuitemcode'] : null;
             $menuitemnaam = isset($_REQUEST['menuitemnaam']) ? $_REQUEST['menuitemnaam'] : null;
             $prijs = isset($_REQUEST['prijs']) ? $_REQUEST['prijs'] : null;
             $subgerecht = isset($_REQUEST['subgerecht']) ? $_REQUEST['subgerecht'] : null;
 
+            // check if data is empty
             if (empty($menuitemcode) or empty($menuitemnaam) or empty($prijs) or empty($subgerecht)) {
                 return "Alle velden zijn vereist";
             }
-
+            // send data to the logic
             try {
                 $this->DishesLogic->createDish($menuitemcode, $menuitemnaam, $prijs, $subgerecht);
             } catch (Exception $e){
@@ -62,7 +67,9 @@ class DishesController{
 
 
     public function collectReadAllDishes(){
+        // get all the menu items
         $data = $this->DishesLogic->readAllDishes();
+        // go to the display and put the data in a table
         $html = $this->Display->createTableDish("dishes", $data);
         include 'view/dishes.php';
     }

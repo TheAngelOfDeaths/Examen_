@@ -16,8 +16,10 @@ class MainController{
     }
 
     public function handleRequest(){
+        //getting from the url which controller to go to
         $con = isset($_GET['con']) ? $_GET['con'] : '';
 
+        //switch for which controller to got to
         switch ($con){
             case "dishes":
                 $this->DishesController->handleRequest();
