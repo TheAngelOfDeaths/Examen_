@@ -1,10 +1,14 @@
 <?php
 
 require_once 'controller/DishesController.php';
+require_once 'controller/ReservationsController.php';
+require_once 'controller/OrdersController.php';
 
 class MainController{
     public function __construct(){
         $this->DishesController = new DishesController();
+        $this->ReservationsController = new ReservationsController();
+        $this->OrdersController = new OrdersController();
     }
 
     public function __destruct(){
@@ -18,9 +22,12 @@ class MainController{
             case "dishes":
                 $this->DishesController->handleRequest();
                 break;
-            case "":
-                $this->DishesController->handleRequest();
+            case "reservations":
+                $this->ReservationsController->handleRequest();
                 break;    
+            case "orders":
+                $this->OrdersController->handleRequest();
+                break;  
             default:
                 $this->DishesController->handleRequest();
                 break;

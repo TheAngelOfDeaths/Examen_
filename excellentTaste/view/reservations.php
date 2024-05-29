@@ -10,13 +10,14 @@
 </head>
 <body>
 
-    <a href="index.php?con=dishes&op=create">
-        <button>Menu item aanmaken</button>
+    <a href="index.php?con=reservations&op=create">
+        <button>Reservering aanmaken</button>
     </a>
 
     <?php
         echo $html;
     ?>
+    
     
 </body>
 </html>
